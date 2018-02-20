@@ -36,6 +36,7 @@
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Analysis/TypeBasedAliasAnalysis.h"
 #include "llvm/CodeGen/Passes.h"
+#include "llvm/CAnDLPasses/CustomPasses.hpp"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/IRPrintingPasses.h"
 #include "llvm/Support/Valgrind.h"
@@ -61,6 +62,13 @@ namespace {
       // to know that getenv() never returns -1, this will do the job.
       if (std::getenv("bar") != (char*) -1)
         return;
+
+      (void) llvm::createResearchMergePointercalcsPass();
+      (void) llvm::createResearchPointerarithmeticPass();
+      (void) llvm::createResearchPreprocessorPass();
+      (void) llvm::createResearchReplacerPass();
+      (void) llvm::createResearchFixOrToAddPass();
+      (void) llvm::createResearchFixShlToMulPass();
 
       (void) llvm::createAAEvalPass();
       (void) llvm::createAggressiveDCEPass();

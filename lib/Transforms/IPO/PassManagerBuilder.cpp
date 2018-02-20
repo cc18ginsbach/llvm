@@ -24,6 +24,7 @@
 #include "llvm/Analysis/ScopedNoAliasAA.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Analysis/TypeBasedAliasAnalysis.h"
+#include "llvm/CAnDLPasses/CustomPasses.hpp"
 #include "llvm/IR/DataLayout.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/ModuleSummaryIndex.h"
@@ -333,7 +334,7 @@ void PassManagerBuilder::addFunctionSimplificationPasses(
   MPM.add(createCFGSimplificationPass());     // Merge & remove BBs
   MPM.add(createReassociatePass());           // Reassociate expressions
   // Rotate Loop - disable header duplication at -Oz
-  MPM.add(createLoopRotatePass(SizeLevel == 2 ? 0 : -1));
+//  MPM.add(createLoopRotatePass(SizeLevel == 2 ? 0 : -1));
   MPM.add(createLICMPass());                  // Hoist loop invariants
   if (EnableSimpleLoopUnswitch)
     MPM.add(createSimpleLoopUnswitchLegacyPass());
@@ -511,6 +512,21 @@ void PassManagerBuilder::populateModulePassManager(
 
   addExtensionsToPM(EP_CGSCCOptimizerLate, MPM);
   addFunctionSimplificationPasses(MPM);
+
+  // My custom research stuff.
+  if (OptLevel >= 2) {
+      MPM.add(createResearchFixShlToMulPass());
+      MPM.add(createResearchFixOrToAddPass());
+      MPM.add(createResearchMergePointercalcsPass());
+      MPM.add(createResearchPointerarithmeticPass());
+      MPM.add(createResearchPreprocessorPass());
+      MPM.add(createAggressiveDCEPass());
+      MPM.add(createLICMPass());
+      MPM.add(createEarlyCSEPass());
+      MPM.add(createCFGSimplificationPass());
+      MPM.add(createResearchReplacerPass());
+      return;
+  }
 
   // FIXME: This is a HACK! The inliner pass above implicitly creates a CGSCC
   // pass manager that we are specifically trying to avoid. To prevent this

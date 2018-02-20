@@ -1,4 +1,4 @@
-;===- ./lib/Transforms/IPO/LLVMBuild.txt -----------------------*- Conf -*--===;
+;===- ./lib/Constraints/LLVMBuild.txt --------------------------*- Conf -*--===;
 ;
 ;                     The LLVM Compiler Infrastructure
 ;
@@ -17,7 +17,6 @@
 
 [component_0]
 type = Library
-name = IPO
-parent = Transforms
-library_name = ipo
-required_libraries = Analysis BitReader BitWriter Core CAnDLPasses InstCombine IRReader Linker Object ProfileData Scalar Support TransformUtils Vectorize Instrumentation
+name = CAnDLPasses
+parent = Libraries
+required_libraries = CAnDLSolver CAnDLParser

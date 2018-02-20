@@ -543,7 +543,9 @@ getBinOpsForFactorization(Instruction::BinaryOps TopLevelOpcode,
 
   // TODO: We can add other conversions e.g. shr => div etc.
 }
-
+#include <iostream>
+#include <string>
+#include "llvm/Support/raw_ostream.h"
 /// This tries to simplify binary operations by factorizing out common terms
 /// (e. g. "(A*B)+(A*C)" -> "A*(B+C)").
 Value *InstCombiner::tryFactorization(BinaryOperator &I,
@@ -631,6 +633,28 @@ Value *InstCombiner::tryFactorization(BinaryOperator &I,
       }
     }
   }
+
+  if(SimplifiedInst)
+  {
+    std::cerr<<"Distribute instruction at "<<&I<<std::endl;
+    std::string string_value[3];
+    {
+        llvm::raw_string_ostream out_stream(string_value[0]);
+        out_stream<<I;
+    }
+    {
+        llvm::raw_string_ostream out_stream(string_value[1]);
+        out_stream<<*I.getOperand(0);
+    }
+    {
+        llvm::raw_string_ostream out_stream(string_value[2]);
+        out_stream<<*I.getOperand(1);
+    }
+    std::cerr<<string_value[0]<<"\n";
+    std::cerr<<"  "<<string_value[1]<<"\n";
+    std::cerr<<"  "<<string_value[2]<<"\n";
+  }
+
   return SimplifiedInst;
 }
 
