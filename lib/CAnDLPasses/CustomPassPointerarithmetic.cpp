@@ -56,7 +56,7 @@ Value* smart_add(IRBuilder<>& builder, Value* a, Value* b)
     if((c = dyn_cast<ConstantInt>(a))) return smart_add(builder, b, c);
     if((c = dyn_cast<ConstantInt>(b))) return smart_add(builder, a, c);
 
-    
+
     BinaryOperator* binop1;
     BinaryOperator* binop2;
     ConstantInt*    fac1;
@@ -65,7 +65,7 @@ Value* smart_add(IRBuilder<>& builder, Value* a, Value* b)
     if((binop1 = dyn_cast<BinaryOperator>(a)) &&
        binop1->getOpcode() == Instruction::Mul &&
        (fac1 = dyn_cast<ConstantInt>(binop1->getOperand(1))) &&
-       (binop2 = dyn_cast<BinaryOperator>(a)) &&
+       (binop2 = dyn_cast<BinaryOperator>(b)) &&
        binop2->getOpcode() == Instruction::Mul &&
        (fac2 = dyn_cast<ConstantInt>(binop2->getOperand(1))))
     {
