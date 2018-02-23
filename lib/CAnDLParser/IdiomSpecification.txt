@@ -9,7 +9,8 @@ Constraint SCoP
 ∧ {constraint_memory.input[0]}   = {iterator}
 ∧ {constraint_memory.input[i+1]} = {constraint_control.loop[i].iterator} foreach i=0..7
 ∧ include AffineMemoryAccessPart({begin}->{begin},{end}->{end}) @ {constraint_memory}
-∧ include AffineControlFlowPart({body.begin}->{begin},{constraint_memory.input}->{input}) @ {constraint_control})
+∧ include AffineControlFlowPart({body.begin}->{begin},{constraint_memory.input}->{input}) @ {constraint_control}
+)
 End
 
 Constraint StructuredControlFlowPart
@@ -51,7 +52,7 @@ Constraint AffineControlFlowPart
 ∧ include AffineCalculation[M=8,N=1]({loop[i].iter_begin}->{value},
                                      {input}->{input},{begin}->{begin})@{loop_affine_begin[i]} foreach i=0..8
 ∧ include AffineCalculation[M=8,N=1]({loop[i].iter_end}->{value},
-                                     {input}->{input},{begin}->{begin})@{loop_affine_begin[i]} foreach i=0..8)
+                                     {input}->{input},{begin}->{begin})@{loop_affine_end[i]} foreach i=0..8)
 End
 
 Constraint MemoryAccess
