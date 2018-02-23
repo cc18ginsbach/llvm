@@ -177,7 +177,8 @@ std::vector<std::vector<unsigned>> construct_rdfg(std::unordered_map<llvm::Instr
         }
         else if(instruction.first->getOpcode() != llvm::Instruction::BitCast &&
                 instruction.first->getOpcode() != llvm::Instruction::ZExt &&
-                instruction.first->getOpcode() != llvm::Instruction::SExt)
+                instruction.first->getOpcode() != llvm::Instruction::SExt &&
+                instruction.first->getOpcode() != llvm::Instruction::Trunc)
         {
             for(auto& operand : instruction.first->operands())
             {
@@ -187,7 +188,8 @@ std::vector<std::vector<unsigned>> construct_rdfg(std::unordered_map<llvm::Instr
                 while((chase_inst = llvm::dyn_cast<llvm::Instruction>(chase)) &&
                       (chase_inst->getOpcode() == llvm::Instruction::BitCast ||
                        chase_inst->getOpcode() == llvm::Instruction::ZExt ||
-                       chase_inst->getOpcode() == llvm::Instruction::SExt))
+                       chase_inst->getOpcode() == llvm::Instruction::SExt ||
+                       chase_inst->getOpcode() == llvm::Instruction::Trunc))
                 {
                     chase = chase_inst->getOperand(0);
                 }

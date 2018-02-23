@@ -333,6 +333,7 @@ void PassManagerBuilder::addFunctionSimplificationPasses(
   MPM.add(createTailCallEliminationPass()); // Eliminate tail calls
   MPM.add(createCFGSimplificationPass());     // Merge & remove BBs
   MPM.add(createReassociatePass());           // Reassociate expressions
+
   // Rotate Loop - disable header duplication at -Oz
 //  MPM.add(createLoopRotatePass(SizeLevel == 2 ? 0 : -1));
   MPM.add(createLICMPass());                  // Hoist loop invariants
@@ -342,7 +343,7 @@ void PassManagerBuilder::addFunctionSimplificationPasses(
     MPM.add(createLoopUnswitchPass(SizeLevel || OptLevel < 3, DivergentTarget));
   MPM.add(createCFGSimplificationPass());
   addInstructionCombiningPass(MPM);
-  MPM.add(createIndVarSimplifyPass());        // Canonicalize indvars
+//  MPM.add(createIndVarSimplifyPass());        // Canonicalize indvars
   MPM.add(createLoopIdiomPass());             // Recognize idioms like memset.
   addExtensionsToPM(EP_LateLoopOptimizations, MPM);
   MPM.add(createLoopDeletionPass());          // Delete dead loops
